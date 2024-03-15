@@ -1,0 +1,37 @@
+#!/bin/bash
+
+length=10
+char=_
+
+for arg in "$@"
+do
+    key=${arg%%=*}
+    value=${arg#*=}
+    case $key in
+        length) length=$value;;
+        ,char) char=$value;;
+        *) echo "Неправильно задан параметр"; exit 1;;
+    esac
+done
+
+if [ "$length" == "" ]; then
+    length=10
+fi
+
+if [ "$char" == "" ]; then
+    char='_'
+fi
+cd trash
+echo "$file"
+for file in *; do
+	if [ -f "$file" ]; then
+		new_name=$file
+        	while [ ${#new_name} -lt $length ]; do
+            		new_name=$new_name$char
+        	done
+		echo "$new_name"
+        	mv "$file" "$new_name"
+    	fi
+done
+echo "length=$length,char=$char"
+

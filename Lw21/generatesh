@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+    echo "Введите количество файлов для генерации"
+    exit 1
+fi
+names=("trash" "test" "pustota" "n" "tasklab21")
+randomname=$((RANDOM % ${#names[@]}))
+for ((i = 1; i <= $1; i++));do
+	names=("test" "cat" "olivyeshechka" "something_nothing" "pustota" "n" "tasklab21")
+	randomname=$((RANDOM % ${#names[@]}))
+    	touch ${names[$randomname]}
+	echo "${names[$randomname]}"
+		mv ${names[$randomname]} trash
+done
+
