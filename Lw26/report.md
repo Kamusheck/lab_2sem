@@ -28,7 +28,8 @@
 |      1       |       3       |
 
 6. Протокол:
-    ```
+
+```
 #include "udt.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -103,29 +104,29 @@ void udt_bubble_sort(udt* queue) {
 ```
 
 ```
-#include <stdio.h>
-#include "udt.h"
+	#include <stdio.h>
+	#include "udt.h"
 
-int main(int argc, char *argv[])
-{
-    int val;
-    udt *q = udt_create(100);
+	int main(int argc, char *argv[])
+	{
+    	int val;
+    	udt *q = udt_create(100);
 
-    while (scanf("%d", &val) == 1)
-        udt_push(q, val);
+    	while (scanf("%d", &val) == 1)
+        	udt_push(q, val);
 
-    udt_bubble_sort(q);
+    	udt_bubble_sort(q);
 
-    printf("\n");
-    while (!udt_is_empty(q)) {
-        val = udt_get(q);
-        printf("%d\n", val);
-        udt_pop(q);
-    }
+    	printf("\n");
+    	while (!udt_is_empty(q)) {
+        	val = udt_get(q);
+        	printf("%d\n", val);
+        	udt_pop(q);
+    	}
 
-    udt_destroy(q);
+    	udt_destroy(q);
 
-    return 0;
-}
+    	return 0;
+    	}
 ```
 8. Вывод: Интересная работа, которая дала попрактиваться в работе с очередью и вспомнить про сортировку пузырьком.Прописывание функций и внедрение  в файл было не супер сложным,но прописывать надо внимательно.
