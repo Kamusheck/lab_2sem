@@ -2,10 +2,10 @@
 #define _CP9_H_
 
 typedef struct {
-    float key[10];        // Вещественные ключи длиной в 4 байта
-    char content[10][12]; // Предполагаем, что длина каждого элемента содержимого - 12 символов
-    int countK;           // Количество ключей, должно быть от 8 до 10
-    int countC;           // Количество элементов содержимого, должно быть от 8 до 10
+    float key[10];        
+    char content[10][12]; 
+    int countK;           
+    int countC;           
 } table;
 
 void sortTable(table **Table);
