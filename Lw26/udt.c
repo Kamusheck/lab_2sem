@@ -49,23 +49,17 @@ void udt_destroy(udt* queue) {
     free(queue);
 }
 
-void udt_find_and_swap(udt* queue) {
-    for (int i = 0; i < queue->size - 1; i++) {
-        int current = queue->data[i];
-        int next = queue->data[i + 1];
-        if (current > next) {
-            queue->data[i] = next;
-            queue->data[i + 1] = current;
-            break;
-        }
-    }
-}
-
 void udt_bubble_sort(udt* queue) {
     int size = queue->size;
     for (int i = 0; i < size - 1; i++) {
         for (int j = 0; j < size - i - 1; j++) {
-            udt_find_and_swap(queue);
+            int current = queue->data[j];
+            int next = queue->data[j + 1];
+            if (current > next) {
+                queue->data[j] = next;
+                queue->data[j + 1] = current;
+            }
         }
     }
 }
+
