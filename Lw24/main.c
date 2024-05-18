@@ -30,7 +30,7 @@ char* nextToken(char** expression) {
     int length = 0;
     if (isdigit(**expression)) {
         while (isdigit((*expression)[length])) length++;
-        if (isalpha((*expression)[length])) length++; 
+        if (isalpha((*expression)[length])) length++; // Include the variable if it follows a number
     } else if (isalpha(**expression)) {
         length = 1;
         while (isdigit((*expression)[length])) length++; 
@@ -170,36 +170,45 @@ void expandSquare(Node* node) {
     expandSquare(node->left);
     expandSquare(node->right);
     if (strcmp(node->value, "^") == 0 && strcmp(node->right->value, "2") == 0 &&
-        strcmp(node->left->value, "-") == 0) {
-        Node* a = cloneNode(node->left->left); 
-        Node* b = cloneNode(node->left->right); 
-
-        Node* a_squared = newNode("^");
-        a_squared->left = a;
-        a_squared->right = newNode("2");
-
-        Node* b_squared = newNode("^");
-        b_squared->left = b;
-        b_squared->right = newNode("2");
-
+        (strcmp(node->left->value, "-") == 0 || strcmp(node->left->value, "+") == 0)) {
+        Node* a = cloneNode(node->left->left);
+        Node* b = cloneNode(node->left->right);
+        Node* two = newNode("2");
         Node* two_a_b = newNode("*");
-        two_a_b->left = newNode("2");
+        two_a_b->left = two;
         two_a_b->right = newNode("*");
-        two_a_b->right->left = cloneNode(a);
-        two_a_b->right->right = cloneNode(b);
-
-        free(node->value);
-        freeTree(node->left);
-        freeTree(node->right);
-
-        node->value = my_strdup("-");
+        if (strcmp(a->value, "+") == 0 || strcmp(a->value, "-") == 0) {
+            Node* a_paren = newNode("(");
+            a_paren->right = a;
+            a = a_paren;
+            Node* a_paren_close = newNode(")");
+            a_paren_close->left = a;
+            a = a_paren_close;
+        }
+        if (strcmp(b->value, "+") == 0 || strcmp(b->value, "-") == 0) {
+            Node* b_paren = newNode("(");
+            b_paren->right = b;
+            b = b_paren;
+            Node* b_paren_close = newNode(")");
+            b_paren_close->left = b;
+            b = b_paren_close;
+        }
+        two_a_b->right->left = a;
+        two_a_b->right->right = b;
+        Node* a_squared = newNode("^");
+        a_squared->left = cloneNode(a);
+        a_squared->right = newNode("2");
+        Node* b_squared = newNode("^");
+        b_squared->left = cloneNode(b);
+        b_squared->right = newNode("2");
+        free(node->value); 
+        node->value = my_strdup(node->left->value); 
+        freeTree(node->left); 
         node->left = a_squared;
-
-        Node* minus_two_a_b_plus_b_squared = newNode("+");
-        minus_two_a_b_plus_b_squared->left = two_a_b;
-        minus_two_a_b_plus_b_squared->right = b_squared;
-
-        node->right = minus_two_a_b_plus_b_squared;
+        freeTree(node->right); 
+        node->right = newNode("+");
+        node->right->left = two_a_b;
+        node->right->right = b_squared;
     }
 }
 
